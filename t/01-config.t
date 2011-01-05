@@ -1,4 +1,4 @@
-#!perl -T
+#!/usr/bin/env perl -T
 
 use strict;
 use warnings;
@@ -26,6 +26,7 @@ CONFIG_TESTING:
         },
         CREATE_OPTIONS   => [ 'normal', 'rect' ],
         PARTICLE_OPTIONS => [ 300 ],
+        SECRET          => 'vbCrfzMCi45TD7Uz4C6fjWvX6us',
     );
 
     ok($app->{__CAP__CAPTCHA_CONFIG}->{IMAGE_OPTIONS},    "IMAGE_OPTIONS defined"   );

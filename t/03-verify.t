@@ -1,9 +1,15 @@
-#!perl -T
+#!/usr/bin/env perl -T
 
 use strict;
 use warnings;
-use Test::More tests => 7;
-use Test::WWW::Mechanize;
+use Test::More;
+
+BEGIN {
+    eval { use Test::WWW::Mechanize };
+    plan skip_all => "Test::WWW::Mechanize required for tests" if $@;
+}
+
+plan tests => 7;
 
 # Bring in testing hierarchy
 use lib './t';
@@ -42,8 +48,11 @@ CREATE_TESTING:
     isnt($hash, "", "Received cryptographic hash in cookie");
 
     # Make sure our cookie contains the CAPTCHA value ABC123
-    my $salt = substr($hash, 0, 2);
-    ok(crypt("ABC123", $salt) eq $hash, "Hash contains CAPTCHA value ABC123");
+    my $secret = 'vbCrfzMCi45TD7Uz4C6fjWvX6us';
+    my $check  = Digest::SHA1::sha1_base64(join("\0", $secret, 'ABC123'));
+    #my $salt = substr($hash, 0, 2);
+    #ok(crypt("ABC123", $salt) eq $hash, "Hash contains CAPTCHA value ABC123");
+    ok( $check eq $hash, "Hash contains CAPTCHA value ABC123");
 
     # Make sure captcha_verify() actually verifies!
     my $app = TestApp2->new();

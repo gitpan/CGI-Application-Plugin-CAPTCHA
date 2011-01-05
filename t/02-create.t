@@ -1,9 +1,15 @@
-#!perl -T
+#!/usr/bin/env perl -T
 
 use strict;
 use warnings;
-use Test::More tests => 4;
-use Test::WWW::Mechanize;
+use Test::More;
+
+BEGIN {
+    eval { use Test::WWW::Mechanize };
+    plan skip_all => "Test::WWW::Mechanize required for tests" if $@;
+}
+
+plan tests => 4;
 
 # Bring in testing hierarchy
 use lib './t';
